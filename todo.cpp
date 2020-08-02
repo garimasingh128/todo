@@ -36,6 +36,12 @@ int main(int argc, char* const argv[]) {
 	}
 
 	todoDb.open(todoDbPath, std::ios::out | std::ios::trunc);
+	if (todoDb.fail())
+	{
+		std::cout << "Couldn't open " + todoDbPath << std::endl;
+		return EXIT_FAILURE;
+	}
+
 	for (size_t i = 0; i < todos.size(); i++) {
 		todoDb << todos.at(i) << std::endl;
 		std::cout << i + 1 << ": " << todos.at(i) << std::endl;

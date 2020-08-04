@@ -7,18 +7,18 @@
 
 int main(int argc, char* const argv[])
 {
-	std::string todoDbPath = std::string(getenv("HOME")) + "/.todo.db";
+	std::string todoFilePath = std::string(getenv("HOME")) + "/.todo.db";
 	std::vector<std::string> todos;
-	std::fstream todoDb;
-	todoDb.open(todoDbPath, std::ios::in);
-	if (todoDb.is_open())
+	std::fstream todoFileStream;
+	todoFileStream.open(todoFilePath, std::ios::in);
+	if (todoFileStream.is_open())
 	{
-		std::string dbTodo;
-		while (std::getline(todoDb, dbTodo))
+		std::string todo;
+		while (std::getline(todoFileStream, todo))
 		{
-			todos.push_back(dbTodo);
+			todos.push_back(todo);
 		}
-		todoDb.close();
+		todoFileStream.close();
 	}
 
 	if (argc > 2 && argv[1] == std::string("add"))
@@ -34,27 +34,27 @@ int main(int argc, char* const argv[])
 	}
 	else if (argc == 3 && argv[1] == std::string("done"))
 	{
-		std::istringstream in(argv[2]);
+		std::istringstream idArg(argv[2]);
 		size_t id;
-		if (in >> id && in.eof() && id > 0 && id < todos.size() + 1)
+		if (idArg >> id && idArg.eof() && id > 0 && id < todos.size() + 1)
 		{
 			todos.erase(todos.begin() + id - 1);
 		}
 	}
 
-	todoDb.open(todoDbPath, std::ios::out | std::ios::trunc);
-	if (todoDb.fail())
+	todoFileStream.open(todoFilePath, std::ios::out | std::ios::trunc);
+	if (todoFileStream.fail())
 	{
-		std::cout << "Couldn't open " + todoDbPath << std::endl;
+		std::cout << "Couldn't open " + todoFilePath << std::endl;
 		return EXIT_FAILURE;
 	}
 
 	for (size_t i = 0; i < todos.size(); i++)
 	{
-		todoDb << todos.at(i) << std::endl;
+		todoFileStream << todos.at(i) << std::endl;
 		std::cout << i + 1 << ": " << todos.at(i) << std::endl;
 	}
-	todoDb.close();
+	todoFileStream.close();
 
 	return EXIT_SUCCESS;
 }

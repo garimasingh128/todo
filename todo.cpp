@@ -9,8 +9,7 @@ int main(int argc, char* const argv[])
 {
 	std::string todoFilePath = std::string(getenv("HOME")) + "/.todo.db";
 	std::vector<std::string> todos;
-	std::fstream todoFileStream;
-	todoFileStream.open(todoFilePath, std::ios::in);
+	std::fstream todoFileStream(todoFilePath, std::ios::in);
 	if (todoFileStream.is_open())
 	{
 		std::string todo;

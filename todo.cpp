@@ -22,13 +22,11 @@ int main(int argc, char* const argv[])
 
 	if (argc > 2 && argv[1] == std::string("add"))
 	{
-		std::ostringstream todoStream;
-		for (int i = 2; i < argc; i++)
+		std::string todo(argv[2]);
+		for (int i = 3; i < argc; i++)
 		{
-			todoStream << argv[i] << ' ';
+			todo += " " + std::string(argv[i]);
 		}
-		std::string todo = todoStream.str();
-		todo.pop_back();
 		todos.push_back(todo);
 	}
 	else if (argc == 3 && argv[1] == std::string("done"))

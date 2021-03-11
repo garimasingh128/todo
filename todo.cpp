@@ -10,7 +10,7 @@ int main(int argc, char* const argv[])
 	std::string todoFilePath = std::string(getenv("HOME")) + "/.todo.db";
 	std::vector<std::string> todos;
 	std::fstream todoFileStream(todoFilePath, std::ios::in);
-	if (todoFileStream.is_open())
+	if (todoFileStream)
 	{
 		std::string todo;
 		while (std::getline(todoFileStream, todo))
@@ -40,7 +40,7 @@ int main(int argc, char* const argv[])
 	}
 
 	todoFileStream.open(todoFilePath, std::ios::out | std::ios::trunc);
-	if (todoFileStream.fail())
+	if (!todoFileStream)
 	{
 		std::cout << "Couldn't open " + todoFilePath << std::endl;
 		return EXIT_FAILURE;

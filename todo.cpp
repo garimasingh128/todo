@@ -1,8 +1,6 @@
-#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <string>
 #include <vector>
 
 int main(int argc, char* const argv[])
@@ -10,7 +8,7 @@ int main(int argc, char* const argv[])
 	std::string todoFilePath = std::string(getenv("HOME")) + "/.todo.db";
 	std::vector<std::string> todos;
 	std::fstream todoFileStream(todoFilePath, std::ios::in);
-	if (todoFileStream.is_open())
+	if (todoFileStream)
 	{
 		std::string todo;
 		while (std::getline(todoFileStream, todo))
@@ -22,13 +20,11 @@ int main(int argc, char* const argv[])
 
 	if (argc > 2 && argv[1] == std::string("add"))
 	{
-		std::ostringstream todoStream;
-		for (int i = 2; i < argc; i++)
+		std::string todo(argv[2]);
+		for (int i = 3; i < argc; i++)
 		{
-			todoStream << argv[i] << ' ';
+			todo += " " + std::string(argv[i]);
 		}
-		std::string todo = todoStream.str();
-		todo.pop_back();
 		todos.push_back(todo);
 	}
 	else if (argc == 3 && argv[1] == std::string("done"))
@@ -42,9 +38,9 @@ int main(int argc, char* const argv[])
 	}
 
 	todoFileStream.open(todoFilePath, std::ios::out | std::ios::trunc);
-	if (todoFileStream.fail())
+	if (!todoFileStream)
 	{
-		std::cout << "Couldn't open " + todoFilePath << std::endl;
+		std::cerr << "Couldn't open " + todoFilePath << std::endl;
 		return EXIT_FAILURE;
 	}
 

@@ -40,7 +40,7 @@ int main(int argc, char* const argv[])
 	todoFileStream.open(todoFilePath, std::ios::out | std::ios::trunc);
 	if (!todoFileStream)
 	{
-		std::cout << "Couldn't open " + todoFilePath << std::endl;
+		std::cerr << "Couldn't open " + todoFilePath << std::endl;
 		return EXIT_FAILURE;
 	}
 
